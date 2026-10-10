@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<meta name="description" content="Daily Class 10 study checklist, chapter tracker, test marks and accountability log.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Class 10 Study Tracker</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#e8edf8;background:#090e1b;--bg:#090e1b;--panel:#111a2b;--panel2:#172238;--border:#26344d;--text:#e8edf8;--muted:#9aa9c2;--accent:#8b9cff;--accent2:#44d7b6;--danger:#ff8585}
+*{box-sizing:border-box}body{margin:0;padding:20px;background:radial-gradient(ellipse at top,#15213a 0%,var(--bg) 55%);min-height:100vh}main{max-width:1120px;margin:auto}
+header,.panel{background:linear-gradient(145deg,#121d31,#0f1728);border:1px solid var(--border);border-radius:18px;padding:20px;margin-bottom:16px;box-shadow:0 10px 30px #0003}
+h1{margin:0 0 6px;font-size:1.75rem;letter-spacing:-.03em}h2{font-size:1.2rem;margin:0 0 14px}h3{font-size:1rem;margin:0 0 10px}p{line-height:1.5}.muted{color:var(--muted);font-size:.92rem}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.row>*{flex:1;min-width:0}
+input,select,textarea,button{font:inherit;border:1px solid #34445f;border-radius:10px;padding:10px 12px;background:#0c1424;color:var(--text);width:100%}input:focus,select:focus,textarea:focus{outline:2px solid #687eff;outline-offset:1px}textarea{min-height:74px;resize:vertical}button{cursor:pointer;background:linear-gradient(135deg,#667bff,#5667dc);color:white;border-color:#667bff;font-weight:650}button:hover{filter:brightness(1.1)}button.secondary{background:#1a2740;color:#e8edf8;border-color:#354663}button.danger{background:#2a1825;color:#ffaaaa;border-color:#704052}.small{width:auto;padding:7px 10px;font-size:.88rem}
+label{display:block;font-weight:600;font-size:.9rem;margin:8px 0 5px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.tabs button{width:auto;background:#17233a;color:#b8c5df;border-color:#293a58}.tabs button.active{background:#dce3ff;color:#151c3c;border-color:#dce3ff}
+.task,.chapter,.test,.account,.metric,.chartcard{border:1px solid var(--border);background:#0e1728;border-radius:13px;padding:13px;margin:10px 0}.tasktop{display:flex;gap:10px;align-items:flex-start}.tasktop input[type=checkbox]{width:20px;height:20px;margin-top:3px;flex:0 0 auto;accent-color:#8b9cff}.tasktitle{font-weight:650}.time{font-size:.82rem;color:var(--muted);margin-top:3px}details{margin-top:10px}summary{cursor:pointer;color:#b9c8e5;font-weight:600}.progress{height:9px;background:#26324a;border-radius:99px;overflow:hidden;margin:8px 0 14px}.bar{height:100%;background:linear-gradient(90deg,#7b8cff,#44d7b6);width:0;border-radius:99px}.badge{display:inline-block;background:#202d46;color:#cbd6f4;border-radius:99px;padding:5px 9px;font-size:.8rem}.subjectline{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:12px 0}footer{font-size:.85rem;color:var(--muted);padding:4px 2px 24px}hr{border:0;border-top:1px solid var(--border)}
+.analytics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.metric{margin:0;padding:15px}.metric .num{font-size:1.65rem;font-weight:800;letter-spacing:-.04em;margin:5px 0}.metric .label{font-size:.82rem;color:var(--muted)}.chartcard{margin:0;padding:16px;min-width:0}.chartcard svg{width:100%;height:auto;display:block;overflow:visible}.chartnote{font-size:.83rem;color:var(--muted);margin-top:10px}.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.82rem;color:var(--muted)}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}.empty{border:1px dashed #394965;border-radius:12px;padding:22px;text-align:center;color:var(--muted)}
+@media(max-width:700px){body{padding:10px}.panel,header{padding:15px}.row{display:block}.row>*{margin-bottom:8px}.analytics-grid{grid-template-columns:1fr}.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metric .num{font-size:1.45rem}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Class 10 Study Tracker</h1>
+  <p class="muted">Daily checklist · evidence · skipped-task reasons · parent review · chapter progress · test marks</p>
+  <div class="row">
+    <div><label for="studyDate">Date</label><input id="studyDate" type="date"></div>
+    <div><label for="weekType">Day plan</label><select id="weekType"><option value="weekday">Weekday (school + tuition)</option><option value="saturday">Saturday</option><option value="sunday">Sunday</option></select></div>
+  </div>
+  <div class="tabs">
+    <button class="active" data-tab="analytics">Analytics</button>
+    <button data-tab="daily">Daily checklist</button>
+    <button data-tab="chapters">Chapter register</button>
+    <button data-tab="tests">Test marks</button>
+    <button data-tab="review">Accountability & export</button>
+  </div>
+  <div id="dailySummary" class="badge">0 of 0 tasks completed</div>
+  <div class="progress"><div id="dailyBar" class="bar"></div></div>
+</header>
+
+
+<section class="panel tabpage" id="analytics">
+  <h2>Progress analytics</h2>
+  <p class="muted">Live dashboard based only on the tasks, chapters and test marks you record. As you add records, the charts update automatically.</p>
+  <div id="metricGrid" class="metric-grid"></div>
+  <div class="analytics-grid" style="margin-top:12px">
+    <div class="chartcard"><h3>Task completion</h3><div id="taskPie"></div><div class="chartnote">Completed vs remaining tasks across saved days.</div></div>
+    <div class="chartcard"><h3>Chapter progress by subject</h3><div id="chapterBars"></div><div class="chartnote">Completion is calculated from chapters you add to the register.</div></div>
+    <div class="chartcard"><h3>Test score trend</h3><div id="testTrend"></div><div class="chartnote">Scores are converted to percentages so tests with different maximum marks can be compared.</div></div>
+    <div class="chartcard"><h3>Study consistency · last 7 days</h3><div id="dailyBars"></div><div class="chartnote">Percentage of checklist tasks ticked complete for each saved date.</div></div>
+  </div>
+  <div class="chartcard" style="margin-top:12px"><h3>Subject performance</h3><div id="subjectStats"></div></div>
+</section>
+
+<section class="panel tabpage" id="daily" hidden>
+  <h2>Today's checklist</h2>
+  <p class="muted">Tick only after doing the task. Expand each task to add evidence or explain why it was missed. Adjust suggested times to match your actual timetable.</p>
+  <div id="taskList"></div>
+  <div class="row">
+    <button id="addTaskBtn" class="secondary">+ Add a task</button>
+    <button id="copyDailyBtn">Copy today's report</button>
+  </div>
+</section>
+
+<section class="panel tabpage" id="chapters" hidden>
+  <h2>Chapter completion register</h2>
+  <div class="row">
+    <div><label for="chapterSubject">Subject</label><select id="chapterSubject"></select></div>
+    <div><label for="chapterName">Chapter / topic</label><input id="chapterName" placeholder="e.g. Electricity"></div>
+  </div>
+  <div class="row">
+    <div><label for="chapterGoal">Goal</label><select id="chapterGoal"><option>Both school exams and boards</option><option>School exams</option><option>Board exams</option></select></div>
+    <div><label for="chapterStatus">Status</label><select id="chapterStatus"><option>Not started</option><option>In progress</option><option>Completed</option><option>Needs revision</option></select></div>
+  </div>
+  <p><button id="addChapterBtn">Add chapter</button></p>
+  <div id="subjectProgress"></div>
+  <div id="chapterList"></div>
+</section>
+
+<section class="panel tabpage" id="tests" hidden>
+  <h2>School test marks</h2>
+  <div class="row">
+    <div><label for="testDate">Test date</label><input id="testDate" type="date"></div>
+    <div><label for="testSubject">Subject</label><select id="testSubject"></select></div>
+  </div>
+  <div class="row">
+    <div><label for="testMarks">Marks obtained</label><input id="testMarks" type="number" min="0" placeholder="e.g. 42"></div>
+    <div><label for="testTotal">Maximum marks</label><input id="testTotal" type="number" min="1" value="100"></div>
+  </div>
+  <p><label for="testNotes">Chapter / notes (optional)</label><input id="testNotes" placeholder="e.g. Electricity numericals"></p>
+  <button id="addTestBtn">Save test result</button>
+  <div id="testList"></div>
+</section>
+
+<section class="panel tabpage" id="review" hidden>
+  <h2>Daily accountability & parent review</h2>
+  <p class="muted">Review tasks marked skipped or partly completed. Parent review is recorded only when your parent actually reviews it; this page does not contact them automatically.</p>
+  <div id="reviewList"></div>
+  <hr style="border:0;border-top:1px solid #e2e7ef;margin:20px 0">
+  <h2>Backup your records</h2>
+  <p class="muted">Your records are saved in this browser on this device. Export a backup regularly, especially before clearing browser data or changing devices.</p>
+  <div class="row">
+    <button id="exportBtn">Download backup (.json)</button>
+    <div><label for="importFile">Restore from backup</label><input id="importFile" type="file" accept=".json,application/json"></div>
+  </div>
+  <p><button class="secondary" id="copyAllBtn">Copy a plain-text summary</button></p>
+  <p><button class="danger" id="clearBtn">Clear all saved data</button></p>
+</section>
+
+<footer>Privacy note: data is saved locally in this browser using localStorage. It is not automatically synced to another device or sent to a parent. Keep a downloaded backup.</footer>
+</main>
+<script>
+const subjects=["Maths","Science","Social Science","English","Hindi","Tamil"];
+const KEY="class10StudyTracker_v1";
+const defaultTasks={
+ weekday:[
+  ["Morning planned revision / practice","5:15–6:00 AM"],
+  ["Record school test portions and homework","During school"],
+  ["Attend Maths and Science tuition","6:00–8:00 PM"],
+  ["Prepare for the next school test","8:10 PM"],
+  ["Complete priority school homework","Evening"],
+  ["Check tomorrow's plan and pack school bag","Before bed"]
+ ],
+ saturday:[
+  ["Morning planned revision / practice","5:15–6:00 AM"],
+  ["Revise a Maths topic","Morning — adjust to fit"],
+  ["Revise a Science topic","Morning — adjust to fit"],
+  ["Attend Maths and Science tuition","Tuition time"],
+  ["Prepare for the next school test","8:10 PM"],
+  ["Review homework and tomorrow's plan","Before bed"]
+ ],
+ sunday:[
+  ["Review the week's important concepts","Morning"],
+  ["Attempt sample questions or a practice test","Late morning"],
+  ["Correct mistakes and revise weak areas","Afternoon"],
+  ["Cover languages / unfinished homework","Afternoon or evening"],
+  ["Plan next week's priorities","Before bed"]
+ ]
+};
+let data={days:{},chapters:[],tests:[]};
+const $=id=>document.getElementById(id);
+const today=()=>new Date().toLocaleDateString("en-CA");
+function load(){try{const raw=localStorage.getItem(KEY);if(raw)data=JSON.parse(raw)}catch(e){console.warn(e)}}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));renderAll()}
+function dateKey(){return $("studyDate").value||today()}
+function dayRecord(){const d=dateKey();if(!data.days[d])data.days[d]={tasks:[]};return data.days[d]}
+function ensureTasks(){const rec=dayRecord();if(!rec.initialized){const type=$("weekType").value;rec.tasks=defaultTasks[type].map(([title,time],i)=>({id:"t"+Date.now()+"_"+i,title,time,done:false,result:"Skipped",proof:"",reason:"",recovery:"",parent:"Not checked"}));rec.initialized=true;persistOnly()} }
+function persistOnly(){localStorage.setItem(KEY,JSON.stringify(data))}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function selectOptions(id){$(id).innerHTML=subjects.map(s=>`<option>${s}</option>`).join("")}
+function renderDaily(){
+ ensureTasks();const rec=dayRecord();const list=$("taskList");
+ list.innerHTML=rec.tasks.map(t=>`<div class="task">
+ <div class="tasktop"><input type="checkbox" data-done="${esc(t.id)}" ${t.done?"checked":""} aria-label="Mark ${esc(t.title)} complete">
+ <div style="flex:1"><div class="tasktitle">${esc(t.title)}</div><div class="time">${esc(t.time)}</div></div></div>
+ <details><summary>Evidence, reason & recovery</summary>
+ <label>Status</label><select data-field="result" data-id="${esc(t.id)}">
+ ${["Completed","Partially completed","Skipped"].map(x=>`<option ${t.result===x?"selected":""}>${x}</option>`).join("")}</select>
+ <label>Evidence for completed work</label><textarea data-field="proof" data-id="${esc(t.id)}" placeholder="What did you do? e.g. solved 10 questions, notes, worksheet.">${esc(t.proof)}</textarea>
+ <label>Reason if missed / partly completed</label><textarea data-field="reason" data-id="${esc(t.id)}" placeholder="Explain honestly what happened.">${esc(t.reason)}</textarea>
+ <label>Recovery plan</label><input data-field="recovery" data-id="${esc(t.id)}" value="${esc(t.recovery)}" placeholder="When will you finish it?">
+ <label>Parent review</label><select data-field="parent" data-id="${esc(t.id)}">${["Not checked","Confirmed by parent","Needs discussion"].map(x=>`<option ${t.parent===x?"selected":""}>${x}</option>`).join("")}</select>
+ </details></div>`).join("");
+ const completed=rec.tasks.filter(t=>t.done).length;const total=rec.tasks.length;
+ $("dailySummary").textContent=`${completed} of ${total} tasks completed · ${total?Math.round(completed/total*100):0}%`;
+ $("dailyBar").style.width=(total?completed/total*100:0)+"%";
+ list.querySelectorAll("[data-done]").forEach(el=>el.addEventListener("change",()=>{const t=rec.tasks.find(t=>t.id===el.dataset.done);t.done=el.checked;t.result=el.checked?"Completed":"Skipped";save()}));
+ list.querySelectorAll("[data-field]").forEach(el=>el.addEventListener("change",()=>{const t=rec.tasks.find(t=>t.id===el.dataset.id);t[el.dataset.field]=el.value;save()}));
+}
+function renderChapters(){
+ $("subjectProgress").innerHTML=subjects.map(s=>{const a=data.chapters.filter(c=>c.subject===s),n=a.filter(c=>c.status==="Completed").length;return `<div class="subjectline"><div><strong>${s}</strong><div class="progress"><div class="bar" style="width:${a.length?n/a.length*100:0}%"></div></div><span class="muted">${n}/${a.length} chapters marked completed · ${a.filter(c=>c.status==="Needs revision").length} need revision</span></div><span class="badge">${a.length?Math.round(n/a.length*100):0}%</span></div>`}).join("");
+ $("chapterList").innerHTML=data.chapters.map(c=>`<div class="chapter"><div class="row"><div><strong>${esc(c.chapter)}</strong><div class="muted">${esc(c.subject)} · ${esc(c.goal)}</div></div><button class="danger small" data-delete-chapter="${c.id}">Delete</button></div><label>Status</label><select data-chapter-status="${c.id}">${["Not started","In progress","Completed","Needs revision"].map(x=>`<option ${c.status===x?"selected":""}>${x}</option>`).join("")}</select></div>`).join("");
+ $("chapterList").querySelectorAll("[data-delete-chapter]").forEach(b=>b.onclick=()=>{data.chapters=data.chapters.filter(c=>c.id!==b.dataset.deleteChapter);save()});
+ $("chapterList").querySelectorAll("[data-chapter-status]").forEach(s=>s.onchange=()=>{const c=data.chapters.find(c=>c.id===s.dataset.chapterStatus);c.status=s.value;save()});
+}
+function renderTests(){
+ $("testList").innerHTML=data.tests.map(t=>`<div class="test"><div class="row"><div><strong>${esc(t.subject)}</strong><div class="muted">${esc(t.date)}${t.notes?" · "+esc(t.notes):""}</div></div><strong>${t.marks}/${t.total} (${Math.round(t.marks/t.total*100)}%)</strong><button class="danger small" data-delete-test="${t.id}">Delete</button></div></div>`).join("");
+ $("testList").querySelectorAll("[data-delete-test]").forEach(b=>b.onclick=()=>{data.tests=data.tests.filter(t=>t.id!==b.dataset.deleteTest);save()});
+}
+function renderReview(){
+ const all=[];for(const [date,r] of Object.entries(data.days))for(const t of r.tasks)if(t.result!=="Completed"||!t.proof.trim())all.push({date,t});
+ $("reviewList").innerHTML=all.length?all.sort((a,b)=>b.date.localeCompare(a.date)).map(({date,t})=>`<div class="account"><strong>${esc(t.title)}</strong><div class="muted">${date} · ${esc(t.result)} · Parent: ${esc(t.parent)}</div><p><strong>Reason:</strong> ${esc(t.reason||"Not provided")}</p><p><strong>Recovery:</strong> ${esc(t.recovery||"Not set")}</p><p><strong>Evidence:</strong> ${esc(t.proof||"Not provided")}</p></div>`).join(""):"<p>No incomplete or evidence-missing tasks found in saved days.</p>";
+}
+function svgText(x,y,text,attrs=''){return `<text x="${x}" y="${y}" ${attrs}>${esc(text)}</text>`}
+function renderAnalytics(){
+ const allTasks=Object.values(data.days).flatMap(r=>r.tasks||[]),done=allTasks.filter(t=>t.done).length,total=allTasks.length;
+ const completedCh=data.chapters.filter(c=>c.status==='Completed').length,chapterTotal=data.chapters.length;
+ const scores=data.tests.map(t=>({...t,pct:t.total?100*t.marks/t.total:0}));
+ const avg=scores.length?scores.reduce((a,t)=>a+t.pct,0)/scores.length:0;
+ const recent=Object.entries(data.days).sort((a,b)=>b[0].localeCompare(a[0])).slice(0,7);
+ const streakDays=new Set(Object.entries(data.days).filter(([d,r])=>(r.tasks||[]).length&&(r.tasks||[]).every(t=>t.done)).map(([d])=>d)).size;
+ $('metricGrid').innerHTML=`<div class="metric"><div class="label">Tasks completed</div><div class="num">${done}<span style="font-size:.9rem;color:var(--muted)"> / ${total}</span></div><div class="muted">${total?Math.round(done/total*100):0}% overall</div></div><div class="metric"><div class="label">Chapters completed</div><div class="num">${completedCh}<span style="font-size:.9rem;color:var(--muted)"> / ${chapterTotal}</span></div><div class="muted">${chapterTotal?Math.round(completedCh/chapterTotal*100):0}% of tracked chapters</div></div><div class="metric"><div class="label">Average test score</div><div class="num">${scores.length?Math.round(avg)+'%':'—'}</div><div class="muted">${scores.length} test${scores.length===1?'':'s'} recorded</div></div><div class="metric"><div class="label">Perfect checklist days</div><div class="num">${streakDays}</div><div class="muted">Saved days with every task complete</div></div>`;
+ if(!total){$('taskPie').innerHTML='<div class="empty">Add daily checklist records to see your completion pie chart.</div>'}else{const pct=done/total*100;const remain=total-done;const r=62,c=2*Math.PI*r,dash= c*pct/100;$('taskPie').innerHTML=`<svg viewBox="0 0 260 180" role="img" aria-label="${Math.round(pct)} percent tasks completed"><circle cx="130" cy="82" r="${r}" fill="none" stroke="#28344d" stroke-width="24"/><circle cx="130" cy="82" r="${r}" fill="none" stroke="#44d7b6" stroke-width="24" stroke-dasharray="${dash} ${c-dash}" transform="rotate(-90 130 82)" stroke-linecap="round"/><text x="130" y="78" text-anchor="middle" font-size="29" font-weight="800" fill="#edf2ff">${Math.round(pct)}%</text><text x="130" y="100" text-anchor="middle" font-size="11" fill="#9aa9c2">completed</text></svg><div class="legend"><span><i class="dot" style="background:#44d7b6"></i>Completed: ${done}</span><span><i class="dot" style="background:#28344d"></i>Remaining: ${remain}</span></div>`}
+ const subj=subjects.map(s=>{const arr=data.chapters.filter(c=>c.subject===s);return {s,n:arr.length,done:arr.filter(c=>c.status==='Completed').length,rev:arr.filter(c=>c.status==='Needs revision').length}});
+ const maxBar=100; $('chapterBars').innerHTML=`<svg viewBox="0 0 340 ${subjects.length*39+8}" role="img" aria-label="Chapter completion by subject">${subj.map((x,i)=>{const y=i*39+8,p=x.n?x.done/x.n*100:0;return `${svgText(0,y+12,x.s,'font-size="11" fill="#b8c5df"')}<rect x="105" y="${y}" width="170" height="13" rx="6" fill="#26344d"/><rect x="105" y="${y}" width="${1.7*p}" height="13" rx="6" fill="#8b9cff"/>${svgText(330,y+11,x.n?Math.round(p)+'%':'—','font-size="11" text-anchor="end" fill="#e8edf8"')}`}).join('')}</svg>`;
+ const sorted=[...scores].sort((a,b)=>a.date.localeCompare(b.date));
+ if(sorted.length<2){$('testTrend').innerHTML=sorted.length?`<div class="empty">One test recorded: <strong>${Math.round(sorted[0].pct)}%</strong>. Add another test to see your trend line.</div>`:'<div class="empty">Record at least two test results to see your score trend.</div>'}else{const w=340,h=190,left=30,right=12,top=16,bottom=38,iw=w-left-right,ih=h-top-bottom;const pts=sorted.map((t,i)=>({x:left+(i/(sorted.length-1))*iw,y:top+(1-t.pct/100)*ih,t}));const path=pts.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+','+p.y.toFixed(1)).join(' ');$('testTrend').innerHTML=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Test score trend">${[0,50,100].map(v=>{let y=top+(1-v/100)*ih;return `<line x1="${left}" y1="${y}" x2="${w-right}" y2="${y}" stroke="#293750" stroke-dasharray="3 4"/>${svgText(left-7,y+4,v+'%','font-size="10" fill="#9aa9c2" text-anchor="end"')}`}).join('')}<path d="${path}" fill="none" stroke="#44d7b6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${pts.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="4" fill="#8b9cff" stroke="#0e1728" stroke-width="2"><title>${esc(p.t.date)}: ${Math.round(p.t.pct)}%</title></circle>`).join('')}${pts.filter((p,i)=>i===0||i===pts.length-1||pts.length<=5).map(p=>svgText(p.x,h-14,p.t.date.slice(5),'font-size="10" fill="#9aa9c2" text-anchor="middle"')).join('')}</svg>`}
+ const days=Array.from({length:7},(_,i)=>{const d=new Date();d.setDate(d.getDate()-(6-i));const key=d.toLocaleDateString('en-CA');const rec=data.days[key];const ts=rec?.tasks||[];return {key,label:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()],pct:ts.length?100*ts.filter(t=>t.done).length/ts.length:0,has:!!ts.length}});
+ $('dailyBars').innerHTML=`<svg viewBox="0 0 340 180" role="img" aria-label="Daily study checklist completion for the last seven days">${[0,50,100].map(v=>{const y=15+(1-v/100)*120;return `<line x1="24" y1="${y}" x2="330" y2="${y}" stroke="#293750" stroke-dasharray="3 4"/>${svgText(18,y+4,v+'%','font-size="9" fill="#9aa9c2" text-anchor="end"')}`}).join('')}${days.map((d,i)=>{const x=37+i*43,y=135-d.pct*1.2;return `<rect x="${x}" y="15" width="25" height="120" rx="5" fill="#202c43"/><rect x="${x}" y="${y}" width="25" height="${d.pct*1.2}" rx="5" fill="${d.has?'#8b9cff':'#36435a'}"><title>${d.key}: ${d.has?Math.round(d.pct)+'%':'no record'}</title></rect>${svgText(x+12,154,d.label,'font-size="10" fill="#b8c5df" text-anchor="middle"')}${d.has?svgText(x+12,Math.max(11,y-5),Math.round(d.pct)+'%','font-size="9" fill="#e8edf8" text-anchor="middle"'):''}`}).join('')}</svg>`;
+ $('subjectStats').innerHTML=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.9rem"><thead><tr style="color:#9aa9c2;text-align:left"><th style="padding:9px;border-bottom:1px solid #293750">Subject</th><th style="padding:9px;border-bottom:1px solid #293750">Chapters done</th><th style="padding:9px;border-bottom:1px solid #293750">Need revision</th><th style="padding:9px;border-bottom:1px solid #293750">Test average</th><th style="padding:9px;border-bottom:1px solid #293750">Tests</th></tr></thead><tbody>${subjects.map(s=>{const ch=data.chapters.filter(c=>c.subject===s),ts=scores.filter(t=>t.subject===s),av=ts.length?Math.round(ts.reduce((a,t)=>a+t.pct,0)/ts.length)+'%':'—';return `<tr><td style="padding:10px;border-bottom:1px solid #202d43">${s}</td><td style="padding:10px;border-bottom:1px solid #202d43">${ch.filter(c=>c.status==='Completed').length}/${ch.length}</td><td style="padding:10px;border-bottom:1px solid #202d43">${ch.filter(c=>c.status==='Needs revision').length}</td><td style="padding:10px;border-bottom:1px solid #202d43">${av}</td><td style="padding:10px;border-bottom:1px solid #202d43">${ts.length}</td></tr>`}).join('')}</tbody></table></div>`;
+}
+function renderAll(){renderDaily();renderChapters();renderTests();renderReview();renderAnalytics()}
+function plainSummary(){
+ let out=["CLASS 10 STUDY TRACKER"];
+ for(const [date,r] of Object.entries(data.days)){out.push("\\n"+date);for(const t of r.tasks)out.push(`${t.done?"[x]":"[ ]"} ${t.title} (${t.time}) | ${t.result} | Proof: ${t.proof||"-"} | Reason: ${t.reason||"-"} | Recovery: ${t.recovery||"-"} | Parent: ${t.parent}`)}
+ out.push("\\nCHAPTERS");for(const c of data.chapters)out.push(`${c.subject} | ${c.chapter} | ${c.goal} | ${c.status}`);
+ out.push("\\nTESTS");for(const t of data.tests)out.push(`${t.date} | ${t.subject} | ${t.marks}/${t.total} | ${t.notes||""}`);
+ return out.join("\\n");
+}
+document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-tab]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".tabpage").forEach(p=>p.hidden=p.id!==b.dataset.tab);renderAll()});
+$("studyDate").value=today();$("testDate").value=today();selectOptions("chapterSubject");selectOptions("testSubject");
+$("studyDate").onchange=()=>{ensureTasks();renderAll()};
+$("weekType").onchange=()=>{const r=dayRecord();if(!r.tasks.length||confirm("Replace this date's checklist with the selected day plan? Existing task details for this date will be replaced.")){r.tasks=defaultTasks[$("weekType").value].map(([title,time],i)=>({id:"t"+Date.now()+"_"+i,title,time,done:false,result:"Skipped",proof:"",reason:"",recovery:"",parent:"Not checked"}));r.initialized=true;save()}};
+$("addTaskBtn").onclick=()=>{const title=prompt("Task name?");if(!title?.trim())return;const time=prompt("Time (optional):","Flexible time")||"Flexible time";dayRecord().tasks.push({id:"t"+Date.now(),title:title.trim(),time,done:false,result:"Skipped",proof:"",reason:"",recovery:"",parent:"Not checked"});persistOnly();renderAll()};
+$("addChapterBtn").onclick=()=>{const chapter=$("chapterName").value.trim();if(!chapter)return alert("Enter a chapter name first.");data.chapters.push({id:"c"+Date.now(),subject:$("chapterSubject").value,chapter,goal:$("chapterGoal").value,status:$("chapterStatus").value});$("chapterName").value="";save()};
+$("addTestBtn").onclick=()=>{const marks=Number($("testMarks").value),total=Number($("testTotal").value);if($("testMarks").value===""||total<=0||marks<0||marks>total)return alert("Enter valid marks and maximum marks.");data.tests.push({id:"x"+Date.now(),date:$("testDate").value||today(),subject:$("testSubject").value,marks,total,notes:$("testNotes").value.trim()});$("testMarks").value="";$("testNotes").value="";save()};
+$("copyDailyBtn").onclick=()=>{const r=dayRecord();const text=`Study checklist — ${dateKey()}\\n`+r.tasks.map(t=>`${t.done?"[x]":"[ ]"} ${t.title} (${t.time}) | ${t.result}\\nProof: ${t.proof||"-"}\\nReason: ${t.reason||"-"}\\nRecovery: ${t.recovery||"-"}\\nParent review: ${t.parent}`).join("\\n\\n");navigator.clipboard?.writeText(text).then(()=>alert("Today's report copied.")).catch(()=>prompt("Copy this report:",text))};
+$("exportBtn").onclick=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="class10-study-backup.json";a.click();URL.revokeObjectURL(a.href)};
+$("importFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const imported=JSON.parse(await f.text());if(!imported.days||!imported.chapters||!imported.tests)throw Error();if(confirm("Replace the current tracker with the selected backup?")){data=imported;save();alert("Backup restored.")}}catch(err){alert("That backup file is invalid.")}e.target.value=""};
+$("copyAllBtn").onclick=()=>{const text=plainSummary();navigator.clipboard?.writeText(text).then(()=>alert("Summary copied.")).catch(()=>prompt("Copy summary:",text))};
+$("clearBtn").onclick=()=>{if(confirm("Permanently clear all tracker data saved in this browser? Download a backup first if needed.")){data={days:{},chapters:[],tests:[]};save()}};
+load();ensureTasks();renderAll();
+</script>
+<script>if ("serviceWorker" in navigator && location.protocol.startsWith("http")) window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script>
+</body>
+</html>

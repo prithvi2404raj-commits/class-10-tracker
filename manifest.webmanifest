@@ -1,0 +1,19 @@
+{
+  "name": "Class 10 Study Tracker",
+  "short_name": "Study Tracker",
+  "description": "Daily checklist, chapter completion, school test marks and accountability.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f6fa",
+  "theme_color": "#18202b",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
