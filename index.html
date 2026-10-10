@@ -32,6 +32,7 @@ label{display:block;font-weight:600;font-size:.9rem;margin:8px 0 5px}.tabs{displ
   </div>
   <div class="tabs">
     <button class="active" data-tab="analytics">Analytics</button>
+    <button data-tab="timetable">Weekly timetable</button>
     <button data-tab="daily">Daily checklist</button>
     <button data-tab="chapters">Chapter register</button>
     <button data-tab="tests">Test marks</button>
@@ -53,6 +54,23 @@ label{display:block;font-weight:600;font-size:.9rem;margin:8px 0 5px}.tabs{displ
     <div class="chartcard"><h3>Study consistency · last 7 days</h3><div id="dailyBars"></div><div class="chartnote">Percentage of checklist tasks ticked complete for each saved date.</div></div>
   </div>
   <div class="chartcard" style="margin-top:12px"><h3>Subject performance</h3><div id="subjectStats"></div></div>
+</section>
+
+
+<section class="panel tabpage" id="timetable" hidden>
+  <h2>Weekly subject timetable</h2>
+  <p class="muted">Your regular revision rotation. If school announces a test for tomorrow, prioritise that test during the evening study slot. Morning time is for revision and practice, not learning new test portions.</p>
+  <div class="metric-grid" style="margin-bottom:14px">
+    <div class="metric"><div class="label">Morning revision</div><div class="num" style="font-size:1.2rem">5:10–5:55</div><div class="muted">AM · 45 minutes</div></div>
+    <div class="metric"><div class="label">School</div><div class="num" style="font-size:1.2rem">8:15–5:30</div><div class="muted">AM–PM</div></div>
+    <div class="metric"><div class="label">Tuition</div><div class="num" style="font-size:1.2rem">6:00–8:00</div><div class="muted">PM · Mon–Sat</div></div>
+    <div class="metric"><div class="label">Test preparation</div><div class="num" style="font-size:1.2rem">8:10–8:45</div><div class="muted">PM · daily</div></div>
+  </div>
+  <div class="row"><div><label for="timetableDay">Choose day</label><select id="timetableDay"><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option><option value="Sunday">Sunday</option></select></div><div><label for="urgentSubject">Tomorrow's school test (optional override)</label><select id="urgentSubject"><option value="">No override</option><option>Maths</option><option>Science</option><option>Social Science</option><option>English</option><option>Hindi</option><option>Tamil</option></select></div></div>
+  <p class="muted" id="overrideNote">Use the override when the next school test differs from the normal rotation.</p>
+  <div id="timetableList"></div>
+  <div class="row"><button id="saveTimetableBtn">Save timetable changes</button><button class="secondary" id="resetTimetableBtn">Reset to recommended timetable</button></div>
+  <p class="muted">Saturday assumes no regular school but tuition still takes place. Sunday is for weekly revision, practice tests, correcting mistakes and planning. Adjust the time blocks to your actual routine.</p>
 </section>
 
 <section class="panel tabpage" id="daily" hidden>
@@ -202,7 +220,20 @@ function renderAnalytics(){
  $('dailyBars').innerHTML=`<svg viewBox="0 0 340 180" role="img" aria-label="Daily study checklist completion for the last seven days">${[0,50,100].map(v=>{const y=15+(1-v/100)*120;return `<line x1="24" y1="${y}" x2="330" y2="${y}" stroke="#293750" stroke-dasharray="3 4"/>${svgText(18,y+4,v+'%','font-size="9" fill="#9aa9c2" text-anchor="end"')}`}).join('')}${days.map((d,i)=>{const x=37+i*43,y=135-d.pct*1.2;return `<rect x="${x}" y="15" width="25" height="120" rx="5" fill="#202c43"/><rect x="${x}" y="${y}" width="25" height="${d.pct*1.2}" rx="5" fill="${d.has?'#8b9cff':'#36435a'}"><title>${d.key}: ${d.has?Math.round(d.pct)+'%':'no record'}</title></rect>${svgText(x+12,154,d.label,'font-size="10" fill="#b8c5df" text-anchor="middle"')}${d.has?svgText(x+12,Math.max(11,y-5),Math.round(d.pct)+'%','font-size="9" fill="#e8edf8" text-anchor="middle"'):''}`}).join('')}</svg>`;
  $('subjectStats').innerHTML=`<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:.9rem"><thead><tr style="color:#9aa9c2;text-align:left"><th style="padding:9px;border-bottom:1px solid #293750">Subject</th><th style="padding:9px;border-bottom:1px solid #293750">Chapters done</th><th style="padding:9px;border-bottom:1px solid #293750">Need revision</th><th style="padding:9px;border-bottom:1px solid #293750">Test average</th><th style="padding:9px;border-bottom:1px solid #293750">Tests</th></tr></thead><tbody>${subjects.map(s=>{const ch=data.chapters.filter(c=>c.subject===s),ts=scores.filter(t=>t.subject===s),av=ts.length?Math.round(ts.reduce((a,t)=>a+t.pct,0)/ts.length)+'%':'—';return `<tr><td style="padding:10px;border-bottom:1px solid #202d43">${s}</td><td style="padding:10px;border-bottom:1px solid #202d43">${ch.filter(c=>c.status==='Completed').length}/${ch.length}</td><td style="padding:10px;border-bottom:1px solid #202d43">${ch.filter(c=>c.status==='Needs revision').length}</td><td style="padding:10px;border-bottom:1px solid #202d43">${av}</td><td style="padding:10px;border-bottom:1px solid #202d43">${ts.length}</td></tr>`}).join('')}</tbody></table></div>`;
 }
-function renderAll(){renderDaily();renderChapters();renderTests();renderReview();renderAnalytics()}
+const timetableDefaults={
+ Monday:[['Morning revision','English','5:10–5:55 AM'],['School','School classes and record tomorrow’s test portions','8:15 AM–5:30 PM'],['Tuition','Maths and Science tuition','6:00–8:00 PM'],['School-test preparation','Prepare for tomorrow’s test / urgent homework','8:10–8:45 PM']],
+ Tuesday:[['Morning revision','Maths','5:10–5:55 AM'],['School','School classes and record tomorrow’s test portions','8:15 AM–5:30 PM'],['Tuition','Maths and Science tuition','6:00–8:00 PM'],['School-test preparation','Prepare for tomorrow’s test / urgent homework','8:10–8:45 PM']],
+ Wednesday:[['Morning revision','Social Science','5:10–5:55 AM'],['School','School classes and record tomorrow’s test portions','8:15 AM–5:30 PM'],['Tuition','Maths and Science tuition','6:00–8:00 PM'],['School-test preparation','Prepare for tomorrow’s test / urgent homework','8:10–8:45 PM']],
+ Thursday:[['Morning revision','Science','5:10–5:55 AM'],['School','School classes and record tomorrow’s test portions','8:15 AM–5:30 PM'],['Tuition','Maths and Science tuition','6:00–8:00 PM'],['School-test preparation','Prepare for tomorrow’s test / urgent homework','8:10–8:45 PM']],
+ Friday:[['Morning revision','Hindi','5:10–5:55 AM'],['School','School classes and record tomorrow’s test portions','8:15 AM–5:30 PM'],['Tuition','Maths and Science tuition','6:00–8:00 PM'],['School-test preparation','Prepare for tomorrow’s test / urgent homework','8:10–8:45 PM']],
+ Saturday:[['Morning revision','Tamil','5:10–5:55 AM'],['Focused study','Maths practice','9:00–9:45 AM'],['Focused study','Science revision','10:00–10:45 AM'],['Focused study','Social Science revision','11:00–11:45 AM'],['Tuition','Maths and Science tuition','6:00–8:00 PM'],['School-test preparation','Prepare for Monday’s test','8:10–8:45 PM']],
+ Sunday:[['Practice test','Maths practice test','8:00–9:00 AM'],['Revision','Science questions','9:15–10:15 AM'],['Revision','Social Science revision','10:30–11:15 AM'],['Languages','English + Hindi/Tamil rotation','4:00–4:45 PM'],['Weekly review','Review marks, correct mistakes and plan next week','5:00–5:30 PM']]
+};
+function getTimetable(){if(!data.timetable)data.timetable={};return data.timetable}
+function renderTimetable(){const day=$('timetableDay').value||'Monday',state=getTimetable(),items=state[day]||timetableDefaults[day].map(x=>({title:x[0],subject:x[1],time:x[2],done:false}));const override=$('urgentSubject').value;const adjusted=items.map((x,i)=>({...x,...(override&&day!=='Sunday'&&x.title==='School-test preparation'?{subject:'TEST PRIORITY: '+override+' (overrides normal rotation)'}:{})}));$('overrideNote').textContent=override?'Priority set to '+override+'. Use the evening slot for that test; morning remains revision/practice only.':'No test override selected. Follow the regular subject rotation and update it when school announces a test.';$('timetableList').innerHTML=adjusted.map((x,i)=>`<div class="task"><div class="tasktop"><input type="checkbox" data-timetable-check="${i}" ${x.done?'checked':''} aria-label="Mark ${esc(x.title)} complete"><div style="flex:1"><div class="tasktitle">${esc(x.title)}</div><div class="time">${esc(x.time)}</div><label>Subject / activity</label><input data-timetable-subject="${i}" value="${esc(x.subject)}" aria-label="Subject or activity"></div></div></div>`).join('');}
+function saveTimetable(){const day=$('timetableDay').value,state=getTimetable(),defaults=timetableDefaults[day];const existing=state[day]||defaults.map(x=>({title:x[0],subject:x[1],time:x[2],done:false}));state[day]=existing.map((x,i)=>({...x,subject:$(`[data-timetable-subject="${i}"]`)?.value||x.subject,done:!!$(`[data-timetable-check="${i}"]`)?.checked}));if($('urgentSubject').value)state.urgentSubject=$('urgentSubject').value;else delete state.urgentSubject;persistOnly();renderTimetable();alert('Timetable saved on this device.');}
+$('timetableDay').onchange=()=>{renderTimetable()};$('urgentSubject').onchange=()=>{renderTimetable()};$('saveTimetableBtn').onclick=saveTimetable;$('resetTimetableBtn').onclick=()=>{const day=$('timetableDay').value;if(!confirm('Reset '+day+' to the recommended timetable?'))return;getTimetable()[day]=timetableDefaults[day].map(x=>({title:x[0],subject:x[1],time:x[2],done:false}));persistOnly();renderTimetable()};
+function renderAll(){renderDaily();renderChapters();renderTests();renderReview();renderAnalytics();if($('timetable'))renderTimetable()}
 function plainSummary(){
  let out=["CLASS 10 STUDY TRACKER"];
  for(const [date,r] of Object.entries(data.days)){out.push("\\n"+date);for(const t of r.tasks)out.push(`${t.done?"[x]":"[ ]"} ${t.title} (${t.time}) | ${t.result} | Proof: ${t.proof||"-"} | Reason: ${t.reason||"-"} | Recovery: ${t.recovery||"-"} | Parent: ${t.parent}`)}
